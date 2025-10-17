@@ -37,3 +37,4 @@ ngrok.yml
 EOFvenv/
 venv/
 .env
+.env
