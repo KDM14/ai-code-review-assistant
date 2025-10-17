@@ -1,0 +1,37 @@
+cat > .gitignore << 'EOF'
+# Virtual environment
+venv/
+.env
+.env.local
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.pytest_cache/
+
+# Database
+*.db
+*.sqlite3
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Ngrok
+.ngrok2/
+ngrok.yml
+EOF
