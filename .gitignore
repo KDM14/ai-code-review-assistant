@@ -34,4 +34,4 @@ logs/
 # Ngrok
 .ngrok2/
 ngrok.yml
-EOF
+EOFvenv/
