@@ -36,3 +36,4 @@ logs/
 ngrok.yml
 EOFvenv/
 venv/
+.env
