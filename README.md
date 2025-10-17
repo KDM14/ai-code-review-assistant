@@ -65,7 +65,7 @@ AI Code Review Assistant is a sophisticated, production-ready system that automa
 <div align="center">
 
 ### Dashboard Overview
-![Dashboard](https://via.placeholder.com/800x400/667eea/ffffff?text=AI+Code+Review+Dashboard)
+![Dashboard](https://i.postimg.cc/BvycB4sB/Screenshot-2025-10-18-at-1-22-44-AM.png)
 
 ### Code Analysis
 ![Code Analysis](https://via.placeholder.com/800x400/764ba2/ffffff?text=Security+Analysis+Panel)
@@ -374,9 +374,9 @@ Having trouble? Here's how to get help:
 
 <div align="center">
 
-**Built with ❤️ for the developer community**
+**Built with ❤️ by Dhanush Manikanta Kandiboina**
 
-[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/ai-code-review-assistant&type=Date)](https://star-history.com/#yourusername/ai-code-review-assistant&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/ai-code-review-assistant&type=Date)](https://star-history.com/KDM14/ai-code-review-assistant&Date)
 
 </div>
 
