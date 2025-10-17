@@ -11,6 +11,7 @@ from sqlalchemy import create_engine, Column, Integer, String, DateTime, JSON
 from sqlalchemy.orm import declarative_base, sessionmaker
 from datetime import datetime
 from fastapi.responses import FileResponse
+
 # Load environment variables
 load_dotenv()
 
@@ -58,7 +59,6 @@ app = FastAPI(
 )
 
 # Dashboard endpoint
-# Dashboard endpoint
 @app.get("/dashboard")
 async def serve_dashboard():
     """Serve the dashboard HTML page"""
@@ -73,29 +73,70 @@ async def serve_dashboard():
             "message": "Create templates/dashboard.html file",
             "status": "missing_dashboard"
         }
+
 print("🚀 AI Code Review Assistant v4.0 starting...")
+
 class UniversalReviewer:
+    def __init__(self):
+        self.providers = ["universal_analyzer"]
+        
     def calculate_quality_score(self, suggestions, files_changed):
-   
+        """Calculate a professional code quality score (0-100)"""
         base_score = 100
-    
+        
         # Deduct points based on suggestion types
         priority_weights = {"high": -10, "medium": -5, "low": -2}
         for suggestion in suggestions:
             base_score += priority_weights.get(suggestion['priority'], -2)
-    
-    # Bonus for clean code
+        
+        # Bonus for clean code
         if len(suggestions) == 0:
             base_score += 20
-    
+        
         # Penalty for large changes
         if len(files_changed) > 10:
             base_score -= 15
-    
+        
         return max(0, min(100, base_score))
     
-    def __init__(self):
-        self.providers = ["universal_analyzer"]
+    def security_scan(self, content, filename):
+        """Advanced security vulnerability detection"""
+        vulnerabilities = []
+        
+        # SQL Injection patterns
+        sql_patterns = [
+            r"SELECT.*\+", r"UNION.*SELECT", r"exec\(.*\)",
+            r"eval\(.*\)", r"pickle\.loads", r"os\.system"
+        ]
+        
+        for pattern in sql_patterns:
+            if re.search(pattern, content, re.IGNORECASE):
+                vulnerabilities.append({
+                    "type": "security",
+                    "file": filename,
+                    "line": self._find_line_number(content, pattern),
+                    "content": "Potential security vulnerability detected",
+                    "priority": "high",
+                    "category": "security"
+                })
+        
+        return vulnerabilities
+    
+    def find_code_smells(self, content, filename):
+        """Detect code smells and anti-patterns"""
+        smells = []
+        
+        # God object detection (too many methods)
+        if filename.endswith('.py'):
+            method_count = content.count('def ')
+            if method_count > 15:
+                smells.append({
+                    "type": "maintainability",
+                    "content": f"Class has {method_count} methods (God object anti-pattern)",
+                    "priority": "high"
+                })
+        
+        return smells
         
     def review_code(self, files_changed, pr_title):
         """Universal code review that works for any repository"""
@@ -114,6 +155,14 @@ class UniversalReviewer:
             # Language-specific analysis
             lang_suggestions = self._language_specific_analysis(filename, content)
             suggestions.extend(lang_suggestions)
+            
+            # Security scan
+            security_issues = self.security_scan(content, filename)
+            suggestions.extend(security_issues)
+            
+            # Code smells detection
+            code_smells = self.find_code_smells(content, filename)
+            suggestions.extend(code_smells)
         
         # Always provide at least one helpful suggestion
         if not suggestions:
@@ -169,7 +218,7 @@ class UniversalReviewer:
     def _language_specific_analysis(self, filename, content):
         """Language-specific best practices"""
         suggestions = []
-        
+        lines = content.split('\n')
         # Python analysis
         if filename.endswith('.py'):
             if 'def ' in content and not any(doc in content for doc in ['"""', "'''"]):
@@ -342,12 +391,33 @@ class UniversalReviewer:
             pass
         return 1
 
+class LearningSystem:
+    def __init__(self):
+        self.pattern_db = {}
+    
+    def learn_from_feedback(self, pr_data, accepted_suggestions, rejected_suggestions):
+        """Learn which suggestions developers accept/reject"""
+        # Track patterns in accepted vs rejected suggestions
+        for suggestion in accepted_suggestions:
+            key = f"{suggestion['type']}_{suggestion['priority']}"
+            self.pattern_db[key] = self.pattern_db.get(key, 0) + 1
+
 class GitHubService:
     def __init__(self):
-        self.token = os.getenv("GITHUB_ACCESS_TOKEN")
+        self.token = os.getenv("GITHUB_TOKEN")
         self.headers = {"Authorization": f"token {self.token}"}
         print(f"🔑 GitHub Token: {self.token[:8]}...")
-    
+        if not self.token:
+            raise ValueError("❌ GITHUB_TOKEN environment variable is not set. Please check your .env file or environment variables.")
+        
+        # Add debug info
+        print(f"✅ GitHub Token loaded: {self.token[:8]}...")
+        print(f"📋 Token length: {len(self.token)} characters")
+        
+        self.headers = {
+            "Authorization": f"token {self.token}",
+            "Accept": "application/vnd.github.v3+json"
+        }
     def get_pr_files(self, repo_owner, repo_name, pr_number):
         """Get PR files with robust error handling"""
         url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/pulls/{pr_number}/files"
@@ -389,7 +459,7 @@ class GitHubService:
             "bug": "🐛", "security": "🔒", "performance": "⚡",
             "improvement": "💡", "documentation": "📝", "refactor": "🔧",
             "best-practice": "⭐", "modernization": "🔄", "readability": "👀",
-            "maintainability": "🏗️", "structure": "📋", "maintainability": "🔨"
+            "maintainability": "🏗️", "structure": "📋"
         }
         
         emoji = emoji_map.get(comment['type'], "🤖")
@@ -579,6 +649,10 @@ async def process_pull_request(payload: dict):
     # Get AI review
     suggestions = reviewer.review_code(files_changed, pr_title)
     
+    # Calculate quality score
+    quality_score = reviewer.calculate_quality_score(suggestions, files_changed)
+    print(f"🏆 Code Quality Score: {quality_score}/100")
+    
     # Post comments to GitHub
     successful_comments = 0
     for suggestion in suggestions:
@@ -610,53 +684,7 @@ async def process_pull_request(payload: dict):
         print(f"❌ Database error: {e}")
     
     print(f"🎉 Successfully posted {successful_comments} comments to PR #{pr_number} in {duration}s")
-def security_scan(self, content, filename):
-    """Advanced security vulnerability detection"""
-    vulnerabilities = []
-    
-    # SQL Injection patterns
-    sql_patterns = [
-        r"SELECT.*\+", r"UNION.*SELECT", r"exec\(.*\)",
-        r"eval\(.*\)", r"pickle\.loads", r"os\.system"
-    ]
-    
-    for pattern in sql_patterns:
-        if re.search(pattern, content, re.IGNORECASE):
-            vulnerabilities.append({
-                "type": "security",
-                "file": filename,
-                "line": self._find_line_number(content, pattern),
-                "content": "Potential security vulnerability detected",
-                "priority": "high",
-                "category": "security"
-            })
-    
-    return vulnerabilities
-def find_code_smells(self, content, filename):
-    """Detect code smells and anti-patterns"""
-    smells = []
-    
-    # God object detection (too many methods)
-    if filename.endswith('.py'):
-        method_count = content.count('def ')
-        if method_count > 15:
-            smells.append({
-                "type": "maintainability",
-                "content": f"Class has {method_count} methods (God object anti-pattern)",
-                "priority": "high"
-            })
-    
-    return smells
-class LearningSystem:
-    def __init__(self):
-        self.pattern_db = {}
-    
-    def learn_from_feedback(self, pr_data, accepted_suggestions, rejected_suggestions):
-        """Learn which suggestions developers accept/reject"""
-        # Track patterns in accepted vs rejected suggestions
-        for suggestion in accepted_suggestions:
-            key = f"{suggestion['type']}_{suggestion['priority']}"
-            self.pattern_db[key] = self.pattern_db.get(key, 0) + 1
+
 # ==================== MAIN EXECUTION ====================
 
 if __name__ == "__main__":
