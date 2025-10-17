@@ -35,3 +35,4 @@ logs/
 .ngrok2/
 ngrok.yml
 EOFvenv/
+venv/
