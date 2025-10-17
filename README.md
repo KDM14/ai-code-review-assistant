@@ -65,13 +65,10 @@ AI Code Review Assistant is a sophisticated, production-ready system that automa
 <div align="center">
 
 ### Dashboard Overview
-![Dashboard](https://via.placeholder.com/800x400/667eea/ffffff?text=AI+Code+Review+Dashboard)
+![Dashboard](https://i.postimg.cc/bvLPdYXW/Screenshot-2025-10-18-at-2-21-24-AM.png)
 
 ### Code Analysis
-![Code Analysis](https://via.placeholder.com/800x400/764ba2/ffffff?text=Security+Analysis+Panel)
-
-### Review Insights
-![Review Insights](https://via.placeholder.com/800x400/f093fb/ffffff?text=Quality+Metrics+Dashboard)
+![Code Analysis](https://i.postimg.cc/6Q19Y6H2/Screenshot-2025-10-18-at-2-21-38-AM.png)
 
 </div>
 
