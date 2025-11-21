@@ -360,8 +360,6 @@ Having trouble? Here's how to get help:
 
 ## 🏆 Showcase
 
-### Companies Using AI Code Review Assistant
-*Add your company here by submitting a PR!*
 
 ### Testimonials
 > "This tool has revolutionized our code review process, catching critical security issues we previously missed." - *Senior Developer, Tech Company*
@@ -372,9 +370,7 @@ Having trouble? Here's how to get help:
 
 <div align="center">
 
-**Built with ❤️ for the developer community**
-
-[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/ai-code-review-assistant&type=Date)](https://star-history.com/#yourusername/ai-code-review-assistant&Date)
+**Built with ❤️ by Dhanush**
 
 </div>
 
